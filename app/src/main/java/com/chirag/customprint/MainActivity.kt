@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity() {
                     (pageInfo.pageHeight / 2).toFloat(),
                     150f,
                     paint)
-            print("Completed")
+            print("Completed!")
         }
 
     }
