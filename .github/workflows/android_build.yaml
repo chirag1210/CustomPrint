@@ -1,0 +1,49 @@
+name: Android Build
+
+on:
+  pull_request:
+    branches:
+      - 'master'
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set Up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Run Kotlin Linter
+        run: ./gradlew lint
+
+      # Step 3: Check the code with Android linter
+      - name: Run Android Linter
+        run: ./gradlew lint
+
+      apk:
+        name: Generate APK
+        runs-on: ubuntu-latest
+
+        steps:
+          - uses: actions/checkout@v1
+          - name: set up JDK 1.8
+            uses: actions/setup-java@v1
+            with:
+              java-version: 1.8
+
+          - name: Build debug APK
+            run:  ./gradlew assembleDebug
+
+          - name: Upload APK
+            uses: actions/upload-artifact@v1
+            with:
+              name: app
+              path: app/build/outputs/apk/debug/app-debug.apk
