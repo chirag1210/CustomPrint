@@ -21,15 +21,22 @@ jobs:
         with:
           java-version: 1.8
 
+      - name: Grant Permission to Execute
+        run: chmod +x gradlew
+
       - name: Run Kotlin Linter
-        run: bash ./gradlew lint
+        run: bash ./gradlew lint --stacktrace
 
       # Step 3: Check the code with Android linter
       - name: Run Android Linter
-        run: bash ./gradlew lint
+        run: bash ./gradlew ktlintCheck --stacktrace
+
+      # Step 3: Check the code with Android format
+      - name: Run Android Linter
+        run: bash ./gradlew ktlintFormat --stacktrace
 
       - name: Build debug APK
-        run: bash ./gradlew assembleDebug
+        run: bash ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v1

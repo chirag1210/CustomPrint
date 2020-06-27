@@ -21,19 +21,20 @@ import android.view.View
 
 class MainActivity : AppCompatActivity() {
 
-    inner class MyPrintDocumentAdapter(private var context: Context)
-        : PrintDocumentAdapter() {
+    inner class MyPrintDocumentAdapter(private var context: Context) : PrintDocumentAdapter() {
 
         private var pageHeight: Int = 0
         private var pageWidth: Int = 0
         private var myPdfDocument: PdfDocument? = null
         private var totalpages = 4
 
-        override fun onLayout(oldAttributes: PrintAttributes,
-                              newAttributes: PrintAttributes,
-                              cancellationSignal: CancellationSignal?,
-                              callback: LayoutResultCallback?,
-                              metadata: Bundle?) {
+        override fun onLayout(
+            oldAttributes: PrintAttributes,
+            newAttributes: PrintAttributes,
+            cancellationSignal: CancellationSignal?,
+            callback: LayoutResultCallback?,
+            metadata: Bundle?
+        ) {
             myPdfDocument = PrintedPdfDocument(context, newAttributes)
 
             val height = newAttributes.mediaSize?.heightMils
@@ -67,10 +68,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        override fun onWrite(pageRanges: Array<out PageRange>?,
-                             destination: ParcelFileDescriptor?,
-                             cancellationSignal: android.os.CancellationSignal?,
-                             callback: WriteResultCallback?) {
+        override fun onWrite(
+            pageRanges: Array<out PageRange>?,
+            destination: ParcelFileDescriptor?,
+            cancellationSignal: android.os.CancellationSignal?,
+            callback: WriteResultCallback?
+        ) {
             for (i in 0 until totalpages) {
                 if (pageInRange(pageRanges, i)) {
                     val newPage = PdfDocument.PageInfo.Builder(pageWidth,
@@ -105,7 +108,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             callback?.onWriteFinished(pageRanges)
-
         }
 
         private fun pageInRange(pageRanges: Array<out PageRange>?, page: Int):
@@ -120,8 +122,10 @@ class MainActivity : AppCompatActivity() {
             return false
         }
 
-        private fun drawPage(page: PdfDocument.Page,
-                             pagenumber: Int) {
+        private fun drawPage(
+            page: PdfDocument.Page,
+            pagenumber: Int
+        ) {
             var pagenum = pagenumber
             val canvas = page.canvas
 
@@ -155,7 +159,6 @@ class MainActivity : AppCompatActivity() {
                     paint)
             print("Completed!")
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -168,8 +171,6 @@ class MainActivity : AppCompatActivity() {
                 .getSystemService(Context.PRINT_SERVICE) as PrintManager
 
         val jobName = this.getString(R.string.app_name) + " Document"
-
         printManager.print(jobName, MyPrintDocumentAdapter(this), null)
     }
-    
 }
