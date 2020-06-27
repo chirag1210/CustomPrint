@@ -24,15 +24,15 @@ jobs:
       - name: Grant Permission to Execute
         run: chmod +x gradlew
 
-      - name: Run Kotlin Linter
+      - name: Run Java Linter
         run: bash ./gradlew lint --stacktrace
 
       # Step 3: Check the code with Android linter
-      - name: Run Android Linter
+      - name: Run Android KTLint
         run: bash ./gradlew ktlintCheck --stacktrace
 
       # Step 3: Check the code with Android format
-      - name: Run Android Linter
+      - name: Run Android KTFormat
         run: bash ./gradlew ktlintFormat --stacktrace
 
       - name: Build debug APK
